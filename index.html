@@ -3,125 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的心意</title>
+    <title>手机端背景图片</title>
     <style>
-        body {
+        * {
             margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            font-family: 'Dancing Script', cursive;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        
+        /* 背景设置 */
+        body {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('Pictures/2.jpg')
+                        center/cover no-repeat fixed;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            color: white;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
         }
-
+        
+        /* 内容区域 */
         .container {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 100%;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3); /* 半透明遮罩，让文字更清晰 */
+            backdrop-filter: blur(5px); /* 毛玻璃效果 */
+            border-radius: 10px;
             margin: 20px;
         }
-
+        
         h1 {
-            color: #e74c3c;
-            font-size: 3em;
-            margin-bottom: 1rem;
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
+    text-align: center;  /* 文字居中 */
+    line-height: 1.5;    /* 可选：设置行高，让垂直方向也居中 */
+    padding: 20px 0;     /* 可选：上下加些间距 */
+}
 
+        
         p {
-            font-size: 1.5em;
             line-height: 1.6;
-            color: #2c3e50;
-            margin: 1rem 0;
+            margin-bottom: 15px;
         }
+      
+      li {
+  font-size: 16px; /* 固定字体大小 */
+}
 
-        .love-btn {
-            padding: 15px 40px;
-            font-size: 1.2em;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: transform 0.3s, background 0.3s;
-            margin-top: 1rem;
-        }
+      hi
 
-        .love-btn:hover {
-            background: #c0392b;
-            transform: scale(1.1);
-        }
-
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            15% { transform: scale(1.3); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.15); }
-            60% { transform: scale(1); }
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        #response {
-            font-size: 2em;
-            color: #27ae60;
-            margin-top: 2rem;
-        }
+        
+        
+        
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>❤️ 给最爱的你 ❤️</h1>
+        <h1>个人博客</h1>
+        <h2>信息</h2>
+        <li>Q群:907474128</li>
         
-        <p>亲爱的<span id="name">XXX</span>：</p>
         
-        <p>从第一次遇见你的那一刻起，我的世界就变得不一样了。</p>
-        
-        <p>你的笑容像阳光一样温暖，你的眼睛里有我最爱的星辰大海。</p>
-        
-        <p>我们一起走过的每一天，都成为了我最珍贵的回忆。</p>
-        
-        <p>我不敢想象没有你的未来，</p>
-        
-        <p>你愿意让我永远陪在你身边吗？</p>
-
-        <button class="love-btn" onclick="showResponse()">请点击这里</button>
-
-        <div id="response" class="hidden">
-            ❤️ 你是我此生最美的遇见 ❤️
-        </div>
     </div>
-
-    <script>
-        function showResponse() {
-            const response = confirm("你愿意和我一起走向未来吗？");
-            const responseDiv = document.getElementById('response');
-            
-            if(response) {
-                responseDiv.innerHTML = "❤️ 余生请多指教！我们永远在一起！ ❤️";
-            } else {
-                responseDiv.innerHTML = "💔 我会一直等你，直到你愿意的那一天 💔";
-            }
-            
-            responseDiv.classList.remove('hidden');
-            document.querySelector('.love-btn').style.display = 'none';
-        }
-    </script>
 </body>
 </html>
