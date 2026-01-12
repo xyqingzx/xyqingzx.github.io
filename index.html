@@ -3,65 +3,663 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>手机端背景图片</title>
+    <title>QQ昵称后缀生成器 - 毛玻璃质感</title>
     <style>
+        /* 基础重置与字体 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
-        /* 背景设置 */
         body {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                        url('Pictures/2.jpg')
-                        center/cover no-repeat fixed;
-            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            color: white;
             min-height: 100vh;
-            -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, 
+                rgba(245, 245, 245, 0.8) 0%, 
+                rgba(230, 230, 230, 0.8) 100%);
+            position: relative;
+            backdrop-filter: blur(20px);
+        }
+        
+        /* 背景装饰元素 */
+        .bg-blur-1, .bg-blur-2, .bg-blur-3 {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .bg-blur-1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.7);
+            top: 10%;
+            left: 10%;
+        }
+        
+        .bg-blur-2 {
+            width: 200px;
+            height: 200px;
+            background: rgba(240, 240, 240, 0.6);
+            bottom: 15%;
+            right: 10%;
+        }
+        
+        .bg-blur-3 {
+            width: 150px;
+            height: 150px;
+            background: rgba(250, 250, 250, 0.5);
+            top: 60%;
+            left: 20%;
+        }
+        
+        /* 主容器 */
+        .glass-container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 毛玻璃遮罩层 */
+        .glass-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.2) 0%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            z-index: 0;
         }
         
         /* 内容区域 */
-        .container {
-            max-width: 100%;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3); /* 半透明遮罩，让文字更清晰 */
-            backdrop-filter: blur(5px); /* 毛玻璃效果 */
-            border-radius: 10px;
-            margin: 20px;
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 40px 30px;
         }
         
-        h1 {
-    text-align: center;  /* 文字居中 */
-    line-height: 1.5;    /* 可选：设置行高，让垂直方向也居中 */
-    padding: 20px 0;     /* 可选：上下加些间距 */
-}
-
+        /* 标题区域 */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
         
-        p {
-            line-height: 1.6;
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: #333;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            color: #666;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+        
+        /* 输入组 */
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: #444;
+            font-size: 1.05rem;
+            padding-left: 5px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            font-size: 16px;
+            color: #333;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.3),
+                0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-group input::placeholder {
+            color: #999;
+            opacity: 0.7;
+        }
+        
+        /* 主按钮 */
+        .btn-primary {
+            width: 100%;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            transition: left 0.6s;
+        }
+        
+        .btn-primary:hover::after {
+            left: 100%;
+        }
+        
+        /* 结果区域 */
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: #444;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .result h3::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #666;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .result p {
+            color: #666;
             margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.5;
         }
-      
-      li {
-  font-size: 16px; /* 固定字体大小 */
-}
-
-      hi
-
         
+        /* 输出框 */
+        .output-box {
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: #333;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
         
+        /* 复制按钮 */
+        .copy-btn {
+            width: 100%;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.3);
+            color: #444;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .copy-btn::before {
+            content: '📄';
+            margin-right: 8px;
+            opacity: 0.8;
+        }
+        
+        /* 说明区域 */
+        .instructions {
+            margin-top: 35px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .instructions h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: #444;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions h3::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #666;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .note {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            border-left: 3px solid rgba(100, 100, 100, 0.3);
+        }
+        
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(100, 100, 100, 0.7);
+            font-size: 0.9rem;
+            padding: 20px 0 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .glass-container {
+                border-radius: 20px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .input-group input {
+                padding: 14px 18px;
+            }
+            
+            .btn-primary {
+                padding: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .glass-container {
+                border-radius: 16px;
+            }
+            
+            .content {
+                padding: 25px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .result, .instructions {
+                padding: 20px;
+            }
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #999;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>个人博客</h1>
-        <h2>信息</h2>
-        <li>Q群:907474128</li>
-        
-        
+    <!-- 背景装饰元素 -->
+    <div class="bg-blur-1"></div>
+    <div class="bg-blur-2"></div>
+    <div class="bg-blur-3"></div>
+    
+    <div class="glass-container">
+        <div class="glass-overlay"></div>
+        <div class="content">
+            <div class="header">
+                <h1>QQ昵称后缀生成器</h1>
+                <p>生成个性化昵称，让@您时显示独特后缀</p>
+            </div>
+            
+            <div class="input-group">
+                <label for="nameInput">输入您的昵称：</label>
+                <input type="text" id="nameInput" placeholder="例如：小明" autocomplete="off" autofocus>
+            </div>
+            
+            <div class="input-group">
+                <label for="suffixInput">输入后缀内容：</label>
+                <input type="text" id="suffixInput" placeholder="例如：喵~" autocomplete="off">
+            </div>
+            
+            <button id="generateBtn" class="btn-primary">生成QQ昵称</button>
+            
+            <div class="loading" id="loading"></div>
+            
+            <div id="result" class="result">
+                <h3>特殊昵称已生成</h3>
+                <p>复制下方内容修改QQ昵称：</p>
+                <div class="output-box" id="output"></div>
+                <button id="copyBtn" class="copy-btn">复制到剪贴板</button>
+            </div>
+            
+            <div class="instructions">
+                <h3>使用说明</h3>
+                <ol>
+                    <li>输入昵称和后缀内容，点击"生成QQ昵称"</li>
+                    <li>复制生成的昵称，在QQ中修改群昵称</li>
+                    <li>当群友@您时，后缀会自动显示在消息末尾</li>
+                </ol>
+                <div class="note">
+                复制进qq就可以用了
+                </div>
+            </div>
+            
+            <div class="footer">
+            </div>
+        </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('nameInput');
+            const suffixInput = document.getElementById('suffixInput');
+            const generateBtn = document.getElementById('generateBtn');
+            const resultDiv = document.getElementById('result');
+            const outputDiv = document.getElementById('output');
+            const copyBtn = document.getElementById('copyBtn');
+            const loadingDiv = document.getElementById('loading');
+            
+            // 生成昵称
+            generateBtn.addEventListener('click', function() {
+                const name = nameInput.value.trim();
+                const suffix = suffixInput.value.trim();
+                
+                if (!name) {
+                    showNotification('请输入昵称！');
+                    nameInput.focus();
+                    return;
+                }
+                
+                if (!suffix) {
+                    showNotification('请输入后缀内容！');
+                    suffixInput.focus();
+                    return;
+                }
+                
+                // 显示加载动画
+                loadingDiv.style.display = 'block';
+                generateBtn.disabled = true;
+                
+                // 模拟处理延迟
+                setTimeout(() => {
+                    // 使用Unicode控制字符实现后缀效果
+                    const specialName = name + '\u2067' + suffix + '\u2066';
+                    
+                    outputDiv.textContent = specialName;
+                    resultDiv.style.display = 'block';
+                    loadingDiv.style.display = 'none';
+                    generateBtn.disabled = false;
+                    
+                    // 平滑滚动到结果区域
+                    resultDiv.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'nearest' 
+                    });
+                    
+                    showNotification('昵称生成成功！');
+                }, 300);
+            });
+            
+            // 复制功能
+            copyBtn.addEventListener('click', function() {
+                const outputText = outputDiv.textContent;
+                
+                if (!outputText) {
+                    showNotification('请先生成昵称！');
+                    return;
+                }
+                
+                navigator.clipboard.writeText(outputText).then(() => {
+                    // 临时更改按钮状态
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '✓ 已复制！';
+                    this.style.background = 'rgba(255, 255, 255, 0.5)';
+                    this.style.color = '#333';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.style.background = '';
+                        this.style.color = '';
+                    }, 2000);
+                    
+                    showNotification('昵称已复制到剪贴板！');
+                }).catch((err) => {
+                    // 如果clipboard API失败，使用备用方法
+                    console.error('复制失败:', err);
+                    const textArea = document.createElement('textarea');
+                    textArea.value = outputText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    
+                    try {
+                        const successful = document.execCommand('copy');
+                        if (successful) {
+                            showNotification('昵称已复制到剪贴板！');
+                        } else {
+                            showNotification('复制失败，请手动复制！');
+                        }
+                    } catch (err) {
+                        showNotification('复制失败，请手动复制！');
+                    }
+                    
+                    document.body.removeChild(textArea);
+                });
+            });
+            
+            // 输入框回车键支持
+            suffixInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    generateBtn.click();
+                }
+            });
+            
+            // 名称输入框回车键支持
+            nameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    suffixInput.focus();
+                }
+            });
+            
+            // 显示通知
+            function showNotification(message) {
+                // 创建通知元素
+                const notification = document.createElement('div');
+                notification.textContent = message;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: rgba(255, 255, 255, 0.9);
+                    backdrop-filter: blur(10px);
+                    color: #333;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease-out;
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // 3秒后移除通知
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease-out';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+                
+                // 添加动画样式
+                if (!document.querySelector('#notification-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'notification-styles';
+                    style.textContent = `
+                        @keyframes slideIn {
+                            from { transform: translateX(100%); opacity: 0; }
+                            to { transform: translateX(0); opacity: 1; }
+                        }
+                        @keyframes slideOut {
+                            from { transform: translateX(0); opacity: 1; }
+                            to { transform: translateX(100%); opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+            
+            // 页面加载完成后自动聚焦到名称输入框
+            nameInput.focus();
+        });
+    </script>
 </body>
 </html>
