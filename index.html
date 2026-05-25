@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <!-- 圆润字体 -->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
   <style>
     /* =============== 基础重置 =============== */
     * {
@@ -24,13 +23,12 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
-      /* 背景图（请替换为有效链接） */
       background: url('http://58.47.108.220:35120/f/avS6/116689141_p0.jpg') no-repeat center center fixed;
       background-size: cover;
       position: relative;
     }
 
-    /* 背景遮罩（增强文字可读性） */
+    /* 背景遮罩 */
     body::before {
       content: '';
       position: absolute;
@@ -38,64 +36,92 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.3); /* 黑色半透明遮罩 */
+      background: rgba(0, 0, 0, 0.2);
       z-index: -1;
     }
 
-    /* 主容器（毛玻璃卡片） */
+    /* 夜间模式 */
+    body.dark-mode {
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                  url('http://58.47.108.220:35120/f/avS6/116689141_p0.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    body.dark-mode::before {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    /* 主容器 */
     .glass-container {
       width: 100%;
       max-width: 500px;
-      background: rgba(255, 255, 255, 0.15); /* 透明毛玻璃背景 */
-      backdrop-filter: blur(20px); /* 毛玻璃模糊 */
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
       border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.2); /* 透明边框 */
+      border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
       overflow: hidden;
       position: relative;
     }
 
-    /* 头部（GitHub图标+日间/夜间切换） */
+    body.dark-mode .glass-container {
+      background: rgba(30, 30, 30, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* 头部栏 */
     .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px;
+      padding: 20px 30px;
       background: rgba(255, 255, 255, 0.1);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    body.dark-mode .header {
+      background: rgba(30, 30, 30, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* GitHub图标 - 左侧圆形 */
     .github-icon {
       width: 40px;
       height: 40px;
-      border-radius: 50%;
       background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
       font-size: 20px;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: all 0.3s ease;
+      text-decoration: none;
     }
 
     .github-icon:hover {
       background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
     }
 
-    .theme-switch {
+    /* 主题切换 */
+    .theme-toggle {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #fff;
+    }
+
+    .theme-label {
       font-size: 14px;
+      color: #fff;
     }
 
     .switch {
       position: relative;
       display: inline-block;
-      width: 60px;
-      height: 30px;
+      width: 50px;
+      height: 24px;
     }
 
     .switch input {
@@ -113,14 +139,14 @@
       bottom: 0;
       background-color: #ccc;
       transition: .4s;
-      border-radius: 30px;
+      border-radius: 24px;
     }
 
     .slider:before {
       position: absolute;
       content: "";
-      height: 22px;
-      width: 22px;
+      height: 16px;
+      width: 16px;
       left: 4px;
       bottom: 4px;
       background-color: white;
@@ -133,7 +159,7 @@
     }
 
     input:checked + .slider:before {
-      transform: translateX(30px);
+      transform: translateX(26px);
     }
 
     /* 内容区域 */
@@ -142,197 +168,575 @@
       color: #fff;
     }
 
+    .title-area {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
     .title {
-      font-size: 28px;
+      font-size: 2.2rem;
       font-weight: 600;
       margin-bottom: 10px;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .subtitle {
-      font-size: 16px;
+      font-size: 1.1rem;
       opacity: 0.9;
-      margin-bottom: 30px;
     }
 
-    /* 输入组（透明输入框） */
+    /* 输入组 - 透明毛玻璃 */
     .input-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .input-group label {
       display: block;
       margin-bottom: 8px;
       font-weight: 500;
-      font-size: 16px;
+      font-size: 1.05rem;
     }
 
     .input-group input {
       width: 100%;
       padding: 16px 20px;
-      background: rgba(255, 255, 255, 0.1); /* 透明背景 */
-      border: 1px solid rgba(255, 255, 255, 0.2); /* 透明边框 */
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 12px;
       font-size: 16px;
       color: #fff;
-      transition: all 0.3s;
-      backdrop-filter: blur(10px); /* 输入框毛玻璃 */
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
     }
 
     .input-group input::placeholder {
-      color: rgba(255, 255, 255, 0.7); /* 半透明占位符 */
+      color: rgba(255, 255, 255, 0.7);
     }
 
     .input-group input:focus {
       outline: none;
-      background: rgba(255, 255, 255, 0.2); /* 聚焦时更亮 */
+      background: rgba(255, 255, 255, 0.2);
       border-color: rgba(255, 255, 255, 0.4);
       box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
     }
 
-    /* 按钮（毛玻璃风格） */
+    body.dark-mode .input-group input {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark-mode .input-group input:focus {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* 按钮 */
     .btn-primary {
       width: 100%;
-      padding: 16px;
-      background: rgba(255, 255, 255, 0.2); /* 透明按钮 */
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.2);
       color: #fff;
       border: none;
       border-radius: 12px;
-      font-size: 16px;
+      font-size: 1.1rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
       backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
     }
 
     .btn-primary:hover {
       background: rgba(255, 255, 255, 0.3);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     }
 
-    /* 使用说明 */
-    .instructions {
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.6s;
+    }
+
+    .btn-primary:hover::after {
+      left: 100%;
+    }
+
+    /* 加载动画 */
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* 结果区域 */
+    .result {
       margin-top: 30px;
-      padding: 20px;
+      padding: 25px;
       background: rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      font-size: 14px;
-      line-height: 1.6;
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: none;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .result h3 {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .result h3::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .result p {
+      opacity: 0.9;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    /* 输出框 */
+    .output-box {
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin: 20px 0;
+      word-break: break-all;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      color: #fff;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    /* 复制按钮 */
+    .copy-btn {
+      width: 100%;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .copy-btn::before {
+      content: '📄';
+      margin-right: 8px;
+      opacity: 0.8;
+    }
+
+    /* 说明区域 */
+    .instructions {
+      margin-top: 35px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .instructions h3 {
-      font-size: 18px;
-      margin-bottom: 10px;
-      font-weight: 600;
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .instructions h3::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      margin-right: 10px;
     }
 
     .instructions ol {
       padding-left: 20px;
+      margin: 15px 0;
     }
 
     .instructions li {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      opacity: 0.9;
     }
 
-    /* 夜间模式样式 */
-    body.dark {
-      background: #121212;
+    .note {
+      margin-top: 15px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      opacity: 0.9;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      border-left: 3px solid rgba(255, 255, 255, 0.3);
     }
 
-    body.dark .glass-container {
-      background: rgba(30, 30, 30, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .glass-container {
+        border-radius: 20px;
+      }
+      
+      .content {
+        padding: 25px 20px;
+      }
+      
+      .title {
+        font-size: 1.8rem;
+      }
+      
+      .header {
+        padding: 15px 20px;
+      }
     }
-
-    body.dark .header {
-      background: rgba(30, 30, 30, 0.5);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    body.dark .input-group input {
-      background: rgba(50, 50, 50, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff;
-    }
-
-    body.dark .btn-primary {
-      background: rgba(50, 50, 50, 0.5);
-      color: #fff;
-    }
-
-    body.dark .instructions {
-      background: rgba(50, 50, 50, 0.5);
-      color: #fff;
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+      
+      .glass-container {
+        border-radius: 16px;
+      }
+      
+      .content {
+        padding: 20px 15px;
+      }
+      
+      .title {
+        font-size: 1.5rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .result, .instructions {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="glass-container">
-    <!-- 头部：GitHub图标 + 日间/夜间切换 -->
+    <!-- 头部：GitHub图标 + 主题切换 -->
     <div class="header">
-      <div class="github-icon">
+      <a href="https://github.com" target="_blank" class="github-icon">
         <i class="fab fa-github"></i>
-      </div>
-      <div class="theme-switch">
-        <span>日间</span>
+      </a>
+      <div class="theme-toggle">
+        <span class="theme-label">日间</span>
         <label class="switch">
-          <input type="checkbox" id="theme-toggle">
+          <input type="checkbox" id="themeSwitch">
           <span class="slider"></span>
         </label>
-        <span>夜间</span>
+        <span class="theme-label">夜间</span>
       </div>
     </div>
 
     <!-- 内容区域 -->
     <div class="content">
-      <h1 class="title">QQ昵称后缀生成器</h1>
-      <p class="subtitle">生成个性化昵称，让你的QQ昵称独特又好看 😎
-
-      <!-- 输入组 -->
-      <div class="input-group">
-        <label for="nickname">输入您的昵称：</label>
-        <input type="text" id="nickname" placeholder="例如：青">
+      <div class="title-area">
+        <h1 class="title">QQ昵称后缀生成器</h1>
+        <p class="subtitle">生成个性化昵称，让@您时显示独特"后缀"🤓🥵</p>
       </div>
-
+      
       <div class="input-group">
-        <label for="suffix">输入后缀内容：</label>
-        <input type="text" id="suffix" placeholder="例如：呀">
+        <label for="nameInput">输入您的昵称：</label>
+        <input type="text" id="nameInput" placeholder="例如：青" autocomplete="off" autofocus>
       </div>
-
-      <!-- 生成按钮 -->
-      <button class="btn-primary" id="generate-btn">生成QQ昵称</button>
-
-      <!-- 使用说明 -->
+      
+      <div class="input-group">
+        <label for="suffixInput">输入后缀内容：</label>
+        <input type="text" id="suffixInput" placeholder="例如：喵~" autocomplete="off">
+      </div>
+      
+      <button id="generateBtn" class="btn-primary">生成QQ昵称</button>
+      
+      <div class="loading" id="loading"></div>
+      
+      <div id="result" class="result">
+        <h3>特殊昵称已生成</h3>
+        <p>复制下方内容修改QQ昵称：</p>
+        <div class="output-box" id="output"></div>
+        <button id="copyBtn" class="copy-btn">复制到剪贴板</button>
+      </div>
+      
       <div class="instructions">
         <h3>使用说明</h3>
         <ol>
-          <li>输入您的昵称和后缀内容，点击"生成QQ昵称"</li>
-          <li>复制生成的昵称，在QQ中修改昵称即可</li>
-          <li>可重复使用快速制作个性昵称</li>
+          <li>输入昵称和后缀内容，点击"生成QQ昵称"</li>
+          <li>复制生成的昵称，在QQ中修改群昵称</li>
+          <li>当群友@您时，后缀会自动显示在消息末尾</li>
         </ol>
+        <div class="note">
+          复制进QQ就可以用了
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    // 日间/夜间模式切换
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('change', function() {
-      document.body.classList.toggle('dark', this.checked);
-    });
-
-    // 生成昵称逻辑
-    const generateBtn = document.getElementById('generate-btn');
-    generateBtn.addEventListener('click', function() {
-      const nickname = document.getElementById('nickname').value.trim();
-      const suffix = document.getElementById('suffix').value.trim();
-      if (nickname && suffix) {
-        const generated = nickname + suffix;
-        alert(`生成的QQ昵称：${generated}\n请复制后在QQ中修改昵称~`);
-      } else {
-        alert('请输入昵称和后缀内容！');
+    document.addEventListener('DOMContentLoaded', function() {
+      // 获取DOM元素
+      const nameInput = document.getElementById('nameInput');
+      const suffixInput = document.getElementById('suffixInput');
+      const generateBtn = document.getElementById('generateBtn');
+      const resultDiv = document.getElementById('result');
+      const outputDiv = document.getElementById('output');
+      const copyBtn = document.getElementById('copyBtn');
+      const loadingDiv = document.getElementById('loading');
+      const themeSwitch = document.getElementById('themeSwitch');
+      const body = document.body;
+      
+      // 主题切换功能
+      function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+          body.classList.add('dark-mode');
+          themeSwitch.checked = true;
+        } else {
+          body.classList.remove('dark-mode');
+          themeSwitch.checked = false;
+        }
       }
+      
+      themeSwitch.addEventListener('change', function() {
+        if (this.checked) {
+          body.classList.add('dark-mode');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          body.classList.remove('dark-mode');
+          localStorage.setItem('theme', 'light');
+        }
+      });
+      
+      // 初始化主题
+      initTheme();
+      
+      // 生成昵称功能
+      generateBtn.addEventListener('click', function() {
+        const name = nameInput.value.trim();
+        const suffix = suffixInput.value.trim();
+        
+        if (!name) {
+          showNotification('请输入昵称！');
+          nameInput.focus();
+          return;
+        }
+        
+        if (!suffix) {
+          showNotification('请输入后缀内容！');
+          suffixInput.focus();
+          return;
+        }
+        
+        // 显示加载动画
+        loadingDiv.style.display = 'block';
+        generateBtn.disabled = true;
+        
+        // 模拟处理延迟
+        setTimeout(() => {
+          // 使用Unicode控制字符实现后缀效果
+          const specialName = name + '\u2067' + suffix + '\u2066';
+          
+          outputDiv.textContent = specialName;
+          resultDiv.style.display = 'block';
+          loadingDiv.style.display = 'none';
+          generateBtn.disabled = false;
+          
+          // 平滑滚动到结果区域
+          resultDiv.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'nearest' 
+          });
+          
+          showNotification('昵称生成成功！');
+        }, 300);
+      });
+      
+      // 复制功能
+      copyBtn.addEventListener('click', function() {
+        const outputText = outputDiv.textContent;
+        
+        if (!outputText) {
+          showNotification('请先生成昵称！');
+          return;
+        }
+        
+        navigator.clipboard.writeText(outputText).then(() => {
+          // 临时更改按钮状态
+          const originalText = this.innerHTML;
+          this.innerHTML = '✓ 已复制！';
+          this.style.background = 'rgba(255, 255, 255, 0.4)';
+          
+          setTimeout(() => {
+            this.innerHTML = originalText;
+            this.style.background = '';
+          }, 2000);
+          
+          showNotification('昵称已复制到剪贴板！');
+        }).catch((err) => {
+          // 如果clipboard API失败，使用备用方法
+          console.error('复制失败:', err);
+          const textArea = document.createElement('textarea');
+          textArea.value = outputText;
+          document.body.appendChild(textArea);
+          textArea.select();
+          
+          try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+              showNotification('昵称已复制到剪贴板！');
+            } else {
+              showNotification('复制失败，请手动复制！');
+            }
+          } catch (err) {
+            showNotification('复制失败，请手动复制！');
+          }
+          
+          document.body.removeChild(textArea);
+        });
+      });
+      
+      // 输入框回车键支持
+      suffixInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          generateBtn.click();
+        }
+      });
+      
+      // 名称输入框回车键支持
+      nameInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          suffixInput.focus();
+        }
+      });
+      
+      // 显示通知
+      function showNotification(message) {
+        // 创建通知元素
+        const notification = document.createElement('div');
+        notification.textContent = message;
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(10px);
+          color: #333;
+          padding: 12px 20px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          z-index: 1000;
+          animation: slideIn 0.3s ease-out;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+        `;
+        
+        // 夜间模式下的通知样式
+        if (body.classList.contains('dark-mode')) {
+          notification.style.background = 'rgba(30, 30, 30, 0.9)';
+          notification.style.color = '#fff';
+        }
+        
+        document.body.appendChild(notification);
+        
+        // 3秒后移除通知
+        setTimeout(() => {
+          notification.style.animation = 'slideOut 0.3s ease-out';
+          setTimeout(() => {
+            if (notification.parentNode) {
+              document.body.removeChild(notification);
+            }
+          }, 300);
+        }, 3000);
+        
+        // 添加动画样式
+        if (!document.querySelector('#notification-styles')) {
+          const style = document.createElement('style');
+          style.id = 'notification-styles';
+          style.textContent = `
+            @keyframes slideIn {
+              from { transform: translateX(100%); opacity: 0; }
+              to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+              from { transform: translateX(0); opacity: 1; }
+              to { transform: translateX(100%); opacity: 0; }
+            }
+          `;
+          document.head.appendChild(style);
+        }
+      }
+      
+      // 页面加载完成后自动聚焦到名称输入框
+      nameInput.focus();
     });
   </script>
 </body>
