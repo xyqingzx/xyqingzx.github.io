@@ -4,15 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>QQ昵称后缀生成器 - 青</title>
-  <!-- 引入 Font Awesome 图标库 -->
+  <!-- Font Awesome 图标库 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- 圆润字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
     /* =============== 基础重置 =============== */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     body {
@@ -21,105 +24,78 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
-      /* 背景设置（请替换为你自己的图片链接） */
+      /* 背景图（请替换为有效链接） */
       background: url('http://58.47.108.220:35120/f/avS6/116689141_p0.jpg') no-repeat center center fixed;
       background-size: cover;
       position: relative;
-      transition: background 0.5s ease;
     }
 
-    /* 夜间模式背景（深色） */
-    body.dark-mode {
-      background: #121212 url('http://58.47.108.220:35120/f/avS6/116689141_p0.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
-    }
-
-    /* 毛玻璃遮罩层（让内容更清晰） */
-    .glass-overlay {
-      position: fixed;
+    /* 背景遮罩（增强文字可读性） */
+    body::before {
+      content: '';
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
+      background: rgba(0, 0, 0, 0.3); /* 黑色半透明遮罩 */
       z-index: -1;
-      transition: background 0.5s ease;
-    }
-
-    body.dark-mode .glass-overlay {
-      background: rgba(0, 0, 0, 0.3);
     }
 
     /* 主容器（毛玻璃卡片） */
     .glass-container {
       width: 100%;
       max-width: 500px;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.15); /* 透明毛玻璃背景 */
+      backdrop-filter: blur(20px); /* 毛玻璃模糊 */
       border-radius: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2); /* 透明边框 */
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
       overflow: hidden;
       position: relative;
-      z-index: 1;
     }
 
-    /* 内容区域 */
-    .content {
-      padding: 40px 30px;
-    }
-
-    /* 顶部栏（GitHub + 日间/夜间切换） */
-    .header-bar {
+    /* 头部（GitHub图标+日间/夜间切换） */
+    .header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
+      justify-content: space-between;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .github-icon {
-      font-size: 24px;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.2);
       width: 40px;
       height: 40px;
       border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
+      color: #fff;
+      font-size: 20px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: background 0.3s;
     }
 
     .github-icon:hover {
-      background: rgba(0, 0, 0, 0.3);
-      transform: scale(1.1);
+      background: rgba(255, 255, 255, 0.3);
     }
 
-    .theme-toggle {
+    .theme-switch {
       display: flex;
       align-items: center;
       gap: 10px;
-      background: rgba(0, 0, 0, 0.2);
-      padding: 8px 16px;
-      border-radius: 20px;
-      cursor: pointer;
       color: #fff;
       font-size: 14px;
-      transition: all 0.3s ease;
-    }
-
-    .theme-toggle:hover {
-      background: rgba(0, 0, 0, 0.3);
     }
 
     .switch {
       position: relative;
       display: inline-block;
-      width: 40px;
-      height: 20px;
+      width: 60px;
+      height: 30px;
     }
 
     .switch input {
@@ -137,16 +113,16 @@
       bottom: 0;
       background-color: #ccc;
       transition: .4s;
-      border-radius: 20px;
+      border-radius: 30px;
     }
 
     .slider:before {
       position: absolute;
       content: "";
-      height: 16px;
-      width: 16px;
-      left: 2px;
-      bottom: 2px;
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
       background-color: white;
       transition: .4s;
       border-radius: 50%;
@@ -157,232 +133,206 @@
     }
 
     input:checked + .slider:before {
-      transform: translateX(20px);
+      transform: translateX(30px);
     }
 
-    /* 标题区域 */
-    .main-header {
-      text-align: center;
+    /* 内容区域 */
+    .content {
+      padding: 30px;
+      color: #fff;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .subtitle {
+      font-size: 16px;
+      opacity: 0.9;
       margin-bottom: 30px;
     }
 
-    .main-header h1 {
-      font-size: 2.2rem;
-      font-weight: 300;
-      color: #fff;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-      margin-bottom: 10px;
-    }
-
-    .main-header p {
-      font-size: 1.1rem;
-      color: rgba(255, 255, 255, 0.8);
-      font-weight: 300;
-    }
-
-    /* 输入组（毛玻璃输入框） */
+    /* 输入组（透明输入框） */
     .input-group {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     .input-group label {
       display: block;
       margin-bottom: 8px;
-      font-weight: 400;
-      color: #fff;
-      font-size: 1.05rem;
-      padding-left: 5px;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      font-weight: 500;
+      font-size: 16px;
     }
 
     .input-group input {
       width: 100%;
       padding: 16px 20px;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1); /* 透明背景 */
+      border: 1px solid rgba(255, 255, 255, 0.2); /* 透明边框 */
       border-radius: 12px;
       font-size: 16px;
       color: #fff;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+      backdrop-filter: blur(10px); /* 输入框毛玻璃 */
     }
 
     .input-group input::placeholder {
-      color: rgba(255, 255, 255, 0.6);
+      color: rgba(255, 255, 255, 0.7); /* 半透明占位符 */
     }
 
     .input-group input:focus {
       outline: none;
-      background: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.2); /* 聚焦时更亮 */
       border-color: rgba(255, 255, 255, 0.4);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
     }
 
-    /* 主按钮 */
+    /* 按钮（毛玻璃风格） */
     .btn-primary {
       width: 100%;
-      padding: 18px;
-      background: rgba(255, 255, 255, 0.2);
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.2); /* 透明按钮 */
       color: #fff;
       border: none;
       border-radius: 12px;
-      font-size: 1.1rem;
-      font-weight: 400;
+      font-size: 16px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.3s;
       backdrop-filter: blur(10px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
 
     .btn-primary:hover {
       background: rgba(255, 255, 255, 0.3);
       transform: translateY(-2px);
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
     /* 使用说明 */
-    .usage {
+    .instructions {
       margin-top: 30px;
       padding: 20px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 12px;
-      backdrop-filter: blur(10px);
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .usage h3 {
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-      font-weight: 400;
-    }
-
-    .usage ol {
-      padding-left: 20px;
-    }
-
-    .usage li {
-      margin-bottom: 10px;
+      font-size: 14px;
       line-height: 1.6;
     }
 
-    /* 响应式适配 */
-    @media (max-width: 600px) {
-      .content {
-        padding: 30px 20px;
-      }
-      .main-header h1 {
-        font-size: 1.8rem;
-      }
+    .instructions h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .instructions ol {
+      padding-left: 20px;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
+    }
+
+    /* 夜间模式样式 */
+    body.dark {
+      background: #121212;
+    }
+
+    body.dark .glass-container {
+      background: rgba(30, 30, 30, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark .header {
+      background: rgba(30, 30, 30, 0.5);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    body.dark .input-group input {
+      background: rgba(50, 50, 50, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    body.dark .btn-primary {
+      background: rgba(50, 50, 50, 0.5);
+      color: #fff;
+    }
+
+    body.dark .instructions {
+      background: rgba(50, 50, 50, 0.5);
+      color: #fff;
     }
   </style>
 </head>
 <body>
-  <!-- 背景遮罩层 -->
-  <div class="glass-overlay"></div>
-
-  <!-- 主容器 -->
   <div class="glass-container">
+    <!-- 头部：GitHub图标 + 日间/夜间切换 -->
+    <div class="header">
+      <div class="github-icon">
+        <i class="fab fa-github"></i>
+      </div>
+      <div class="theme-switch">
+        <span>日间</span>
+        <label class="switch">
+          <input type="checkbox" id="theme-toggle">
+          <span class="slider"></span>
+        </label>
+        <span>夜间</span>
+      </div>
+    </div>
+
+    <!-- 内容区域 -->
     <div class="content">
-      <!-- 顶部栏：GitHub + 主题切换 -->
-      <div class="header-bar">
-        <a href="https://github.com/yourusername" target="_blank" class="github-icon">
-          <i class="fab fa-github"></i>
-        </a>
-        <div class="theme-toggle" id="themeToggle">
-          <span>日间</span>
-          <label class="switch">
-            <input type="checkbox" id="themeSwitch">
-            <span class="slider"></span>
-          </label>
-          <span>夜间</span>
-        </div>
+      <h1 class="title">QQ昵称后缀生成器</h1>
+      <p class="subtitle">生成个性化昵称，让你的QQ昵称独特又好看 😎
+
+      <!-- 输入组 -->
+      <div class="input-group">
+        <label for="nickname">输入您的昵称：</label>
+        <input type="text" id="nickname" placeholder="例如：青">
       </div>
 
-      <!-- 标题区域 -->
-      <div class="main-header">
-        <h1>QQ昵称后缀生成器</h1>
-        生成个性化昵称，让你的QQ昵称独特又好看 😎
+      <div class="input-group">
+        <label for="suffix">输入后缀内容：</label>
+        <input type="text" id="suffix" placeholder="例如：呀">
       </div>
 
-      <!-- 输入表单 -->
-      <form id="nickForm">
-        <div class="input-group">
-          <label for="nickname">输入您的昵称：</label>
-          <input 
-            type="text" 
-            id="nickname" 
-            placeholder="例如：青" 
-            required
-          />
-        </div>
-
-        <div class="input-group">
-          <label for="suffix">输入后缀内容：</label>
-          <input 
-            type="text" 
-            id="suffix" 
-            placeholder="例如：呀" 
-            required
-          />
-        </div>
-
-        <button type="submit" class="btn-primary">生成QQ昵称</button>
-      </form>
+      <!-- 生成按钮 -->
+      <button class="btn-primary" id="generate-btn">生成QQ昵称</button>
 
       <!-- 使用说明 -->
-      <div class="usage">
+      <div class="instructions">
         <h3>使用说明</h3>
         <ol>
           <li>输入您的昵称和后缀内容，点击"生成QQ昵称"</li>
-          <li>复制生成的昵称，在QQ中修改昵称</li>
-          <li>当朋友@您时，后缀会自动显示在消息末尾</li>
+          <li>复制生成的昵称，在QQ中修改昵称即可</li>
+          <li>可重复使用快速制作个性昵称</li>
         </ol>
       </div>
     </div>
   </div>
 
   <script>
-    // 主题切换功能
-    const themeSwitch = document.getElementById('themeSwitch');
-    const body = document.body;
-
-    // 检查本地存储的主题偏好
-    if (localStorage.getItem('theme') === 'dark') {
-      body.classList.add('dark-mode');
-      themeSwitch.checked = true;
-    }
-
-    // 切换主题
-    themeSwitch.addEventListener('change', () => {
-      if (themeSwitch.checked) {
-        body.classList.add('dark-mode');
-        localStorage.setItem('theme', 'dark');
-      } else {
-        body.classList.remove('dark-mode');
-        localStorage.setItem('theme', 'light');
-      }
+    // 日间/夜间模式切换
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('change', function() {
+      document.body.classList.toggle('dark', this.checked);
     });
 
-    // 表单提交处理
-    document.getElementById('nickForm').addEventListener('submit', (e) => {
-      e.preventDefault();
+    // 生成昵称逻辑
+    const generateBtn = document.getElementById('generate-btn');
+    generateBtn.addEventListener('click', function() {
       const nickname = document.getElementById('nickname').value.trim();
       const suffix = document.getElementById('suffix').value.trim();
-      
       if (nickname && suffix) {
-        const generatedNick = `${nickname} ${suffix}`;
-        alert(`生成的QQ昵称：${generatedNick}\n请复制后在QQ中粘贴使用`);
-        // 可选：自动复制到剪贴板
-        navigator.clipboard.writeText(generatedNick).then(() => {
-          alert('已复制到剪贴板！');
-        });
+        const generated = nickname + suffix;
+        alert(`生成的QQ昵称：${generated}\n请复制后在QQ中修改昵称~`);
+      } else {
+        alert('请输入昵称和后缀内容！');
       }
-    });
-
-    // GitHub 图标点击跳转（替换为你的 GitHub 地址）
-    document.querySelector('.github-icon').addEventListener('click', () => {
-      window.open('https://github.com/yourusername', '_blank');
     });
   </script>
 </body>
